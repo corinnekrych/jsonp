@@ -16,6 +16,8 @@ function name to provide cross domain JSONP RESTfull controllers
   </repositories>
   <dependencies />
   <plugins />
-  <runtimePluginRequirements />
+  <runtimePluginRequirements>
+    <plugin name='controllers' version='1.1 &gt; *' />
+  </runtimePluginRequirements>
   <behavior />
 </plugin>

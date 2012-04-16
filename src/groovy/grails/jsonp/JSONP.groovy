@@ -1,4 +1,4 @@
-package org.toto
+package grails.jsonp
 
 import grails.converters.JSON;
 

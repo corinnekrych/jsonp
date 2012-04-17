@@ -1,7 +1,7 @@
 
 import grails.converters.JSON;
 
-import org.toto.JSONP
+import grails.jsonp.JSONP
 
 class JsonpGrailsPlugin {
 	// the plugin version

@@ -5,7 +5,7 @@ import grails.jsonp.JSONP
 
 class JsonpGrailsPlugin {
 	// the plugin version
-	def version = "0.3"
+	def version = "0.5"
 	// the version or versions of Grails the plugin is designed for
 	def grailsVersion = "2.0 > *"
 
@@ -65,25 +65,11 @@ function name to provide cross domain JSONP RESTfull controllers
 	def doWithDynamicMethods = { ctx ->
 
 		application.controllerClasses.each { controller ->
-			//def methods = controller.metaClass.getMetaMethods()
-			//def methods = controller.metaClass.getExpandoMethods()
-			def methods = controller.metaClass.getMethods()
-//			methods.each {
-//				if (it.name == 'render') {
-//					log.error it.signature
-//				}
-//			}
-			def original = controller.metaClass.pickMethod("render", [
-				org.codehaus.groovy.grails.web.converters.Converter
-			]as Class[])
-			log.error "...$original"
+			def original = controller.metaClass.pickMethod("render", [org.codehaus.groovy.grails.web.converters.Converter] as Class[])
+			log.error "__$original"
 			controller.metaClass.render = {JSON arg ->
-				
-				log.error 'before invoke'
 				def jsonp = new JSONP(response, params.callback, arg.target)			
 				original.invoke(delegate, jsonp)
-				log.error 'after invoke'
-
 			}
 
 		}

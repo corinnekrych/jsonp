@@ -65,13 +65,23 @@ function name to provide cross domain JSONP RESTfull controllers
 	def doWithDynamicMethods = { ctx ->
 
 		application.controllerClasses.each { controller ->
-			def original = controller.metaClass.pickMethod("render", [org.codehaus.groovy.grails.web.converters.Converter] as Class[])
-			log.error "__$original"
-			controller.metaClass.render = {JSON arg ->
-				def jsonp = new JSONP(response, params.callback, arg.target)			
-				original.invoke(delegate, jsonp)
-			}
-
+      controller.metaClass.methods.collect { method ->
+        def methodName = method.name
+        if (methodName == "render") {
+          println "found a render method"
+          println method.parameterTypes
+        } 
+      }
+      def original = controller.metaClass.pickMethod("render", [org.codehaus.groovy.grails.web.converters.Converter] as Class[])
+      controller.metaClass.render = {JSON arg ->
+        def jsonp = new JSONP(response, params.callback, arg.target)      
+        original.invoke(delegate, jsonp)
+      }
+//      def original = controller.metaClass.pickMethod("render", [String] as Class[])
+//      controller.metaClass.render = {String arg ->
+//        def jsonp = new JSONP(response, params.callback, arg.target)      
+//        original.invoke(delegate, jsonp)
+//      }
 		}
 	}
 
